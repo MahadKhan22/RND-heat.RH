@@ -1,4 +1,4 @@
-# Heat & Humidity Environmental Control System
+# Heat & Humidity Environmental Testing System
 
 ## Overview
 This repository contains firmware for an ESP32-based environmental testing chamber. The system actively monitors temperature and humidity utilizing a DHT22 sensor and regulates environmental conditions by toggling external heater and humidifier relays. It includes a local TFT SPI display, a 4x4 matrix keypad for parameter configuration, and UDP-based Wi-Fi telemetry.
@@ -44,7 +44,7 @@ This project requires PlatformIO. The following libraries are defined in the `pl
 1.  System initializes serial communication at 115200 baud.
 2.  System attempts Wi-Fi connection using hardcoded credentials.
 3.  If connection fails after 10 seconds, the system bypasses telemetry and enters offline operational mode.
-4.  Initial target setpoints default to 50.0°C and 95.0% RH (as per current helmet contract).
+4.  Initial target setpoints default to 50.0 C and 95.0% RH (as per current helmet contract).
 
 ### Keypad Interface
 *   **`A`**: Initiate target temperature entry.
@@ -55,7 +55,7 @@ This project requires PlatformIO. The following libraries are defined in the `pl
 *   **`0`-`9`**: Numerical input (limited to 5 characters)
 
 ### Control Logic
-*   The DHT22 is polled every 2000 milliseconds.
+*   The DHT22 is polled every 2000 milliseconds. (READ_INTERVAL)
 *   If the current temperature is below the target temperature, the heater relay is energized.
 *   If the current humidity is below the target humidity, the humidifier relay is energized.
 

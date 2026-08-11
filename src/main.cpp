@@ -48,7 +48,7 @@ enum InputMode { NONE, SET_TEMP, SET_HUM };
 InputMode currentMode = NONE;
 
 unsigned long lastDHTRead = 0;
-const unsigned long DHT_READ_INTERVAL = 2000; // 2 seconds between DHT reads
+const unsigned long READ_INTERVAL = 2000; // 2 seconds between DHT reads
 
 // --- Function Prototypes ---
 void handleKeypad();
@@ -110,7 +110,7 @@ void loop() {
 
 void readSensorAndUpdate() {
   // Enforce reading interval required by DHT sensors
-  if (millis() - lastDHTRead > DHT_READ_INTERVAL) { 
+  if (millis() - lastDHTRead > READ_INTERVAL) { 
     lastDHTRead = millis();
     
     float h = dht.readHumidity(); 
