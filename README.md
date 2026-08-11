@@ -6,13 +6,14 @@ This repository contains firmware for an ESP32-based environmental testing chamb
 ## Hardware Specifications and Pin Mapping
 
 ### Microcontroller
-*   ESP32 Development Board
+*   ESP32 Development Board (30 pin)
 
 ### Sensor
 *   **Model:** DHT22 (pull up HIGH)
 *   **Data Pin:** GPIO 15
 
 ### Relays
+*   **NPN BJT:** 2N3904 (2x)
 *   **Heater Control:** GPIO 17 (Active HIGH)
 *   **Humidifier Control:** GPIO 16 (Active HIGH)
 
@@ -68,4 +69,9 @@ When successfully connected to a Wi-Fi network, the ESP32 operates as a UDP clie
 *   **Destination IP:** Hardcoded in `targetIP`.
 *   **Destination Port:** 8080.
 *   **Payload Format:** Comma-separated string containing `<Temperature_C>,<Humidity_RH>`.
-*   **Transmission Condition:** UDP packets are only dispatched when valid, non-NAN sensor readings are acquired.
+*   **Transmission Condition:** UDP packets are only dispatched when valid, non-NAN sensor readings are acquired
+
+## Hardware Documentation
+
+### Wiring Diagram
+![Schematic Diagram](hardware/heat.rh.wiringDiagram.png)
