@@ -199,27 +199,26 @@ void updateDisplay() {
   tft.fillScreen(TFT_BLACK); 
   tft.setCursor(0, 0); 
   
-  tft.println("--- Current Status ---");
+  tft.println("--- Current Status | Target Setpoint ---");
   
   tft.print("Temp: "); 
   if (isnan(currentTemp)) {
-    tft.println("Error");
+    tft.print("Error        |      ");
   } else {
     tft.print(currentTemp); 
-    tft.println(" C"); 
+    tft.print(" C      |      "); 
   }
+  tft.print(targetTemp); tft.println(" C");
 
   tft.print("Hum:  "); 
   if (isnan(currentHum)) {
-    tft.println("Error");
+    tft.print("Error        |      ");
   } else {
     tft.print(currentHum); 
-    tft.println(" %"); 
+    tft.print(" %      |      "); 
   }
-  
-  tft.println("\n--- Target Setpoints ---");
-  tft.print("Set Temp: "); tft.print(targetTemp); tft.println(" C");
-  tft.print("Set Hum:  "); tft.print(targetHum); tft.println(" %");
+  tft.print(targetHum); tft.println(" %");
+
   
   tft.println("\n--- Input Mode ---");
   tft.println("A:Set Temp  B:Set Hum");
