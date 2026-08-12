@@ -1,7 +1,7 @@
 # Heat & Humidity Environmental Testing System
 
 ## Overview
-This repository contains firmware for an ESP32-based environmental testing chamber. The system actively monitors temperature and humidity utilizing a DHT22 sensor and regulates environmental conditions by toggling external heater and humidifier relays. It includes a local TFT SPI display, a 4x4 matrix keypad for parameter configuration, and UDP-based Wi-Fi telemetry.
+This repository contains firmware for an ESP32-based environmental testing chamber. The system actively monitors temperature and humidity utilizing a DHT22 sensor and regulates environmental conditions by toggling external heater and humidifier relays. It includes a local TFT SPI display, a 4x4 matrix keypad for parameter configuration, and USB serial data telemetry.
 
 ## Hardware Specifications and Pin Mapping
 
@@ -43,9 +43,7 @@ This project requires PlatformIO. The following libraries are defined in the `pl
 
 ### Startup Sequence
 1.  System initializes serial communication at 115200 baud.
-2.  System attempts Wi-Fi connection using hardcoded credentials.
-3.  If connection fails after 10 seconds, the system bypasses telemetry and enters offline operational mode.
-4.  Initial target setpoints default to 50.0 C and 95.0% RH (as per current helmet contract).
+2.  Initial target setpoints default to 50.0 C and 95.0% RH (as per current helmet contract).
 
 ### Keypad Interface
 *   **`A`**: Initiate target temperature entry.
@@ -64,12 +62,11 @@ This project requires PlatformIO. The following libraries are defined in the `pl
 *   If the DHT22 fails to return valid data (returns `NAN`), both the heater and humidifier relays are immediately forced LOW (disabled) to prevent runaway events.
 *   The TFT display will output "Error" in place of the numerical readings.
 
-## Network Telemetry
-When successfully connected to a Wi-Fi network, the ESP32 operates as a UDP client.
-*   **Destination IP:** Hardcoded in `targetIP`.
-*   **Destination Port:** 8080.
-*   **Payload Format:** Comma-separated string containing `<Temperature_C>,<Humidity_RH>`.
-*   **Transmission Condition:** UDP packets are only dispatched when valid, non-NAN sensor readings are acquired
+## USB Serial Telemetry
+The ESP32 continuously exports sensor state data over the physical USB connection via the UART interface.
+*   **Baud Rate:** 115200.
+*   **Payload Format:** Comma-separated string prefixed with a data identifier: `DATA,<Temperature_C>,<Humidity_RH>`.
+*   **Transmission Condition:** Packets are only dispatched when valid, non-NAN sensor readings are acquired.
 
 ## Hardware Documentation
 

@@ -2,16 +2,6 @@
 #include <DHT.h>
 #include <Keypad.h>
 #include <TFT_eSPI.h>
-#include <WiFi.h>
-#include <WiFiUdp.h>
-
-// --- Network Configuration ---
-const char* ssid = "RND";
-const char* password = "Norton351@";
-const char* targetIP = "192.168.1.XXX"; 
-const int targetPort = 8080;
-
-WiFiUDP udp;
 
 // --- Hardware Pin Definitions ---
 #define DHTPIN 15      // Data pin for DHT22 sensor
@@ -55,7 +45,7 @@ void handleKeypad();
 void readSensorAndUpdate();
 void controlRelays();
 void updateDisplay();
-void sendDataUDP(float temp, float hum);
+void sendDataSerial(float temp, float hum);
 
 void setup() {
   Serial.begin(115200); 
@@ -63,24 +53,8 @@ void setup() {
     delay(10); 
   }
 
-  // Initialize network connection with a 10-second timeout
-  WiFi.begin(ssid, password);
-  unsigned long startAttemptTime = millis();
-  const unsigned long WIFI_TIMEOUT = 10000; 
-
-  Serial.print("Connecting to Wi-Fi");
-  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_TIMEOUT) {
-    delay(500);
-    Serial.print(".");
-  }
-
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\nWi-Fi Connected.");
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
-  } else {
-    Serial.println("\nWi-Fi connection failed. Operating in offline mode.");
-  }
+  Serial.println("\nSystem Initializing...");
+  Serial.println("Telemetry configured for USB Serial. Format: DATA,<Temp>,<Hum>");
 
   // Initialize DHT sensor
   dht.begin(); 
@@ -101,7 +75,6 @@ void setup() {
   updateDisplay();
 }
 
-
 void loop() {
   handleKeypad();
   readSensorAndUpdate();
@@ -121,20 +94,19 @@ void readSensorAndUpdate() {
     
     // Transmit data only if readings are valid
     if (!isnan(h) && !isnan(t)) { 
-      sendDataUDP(t, h);
+      sendDataSerial(t, h);
     }
     
     updateDisplay();
   }
 }
 
-void sendDataUDP(float temp, float hum) {
-  if (WiFi.status() == WL_CONNECTED) {
-    String payload = String(temp) + "," + String(hum);
-    udp.beginPacket(targetIP, targetPort);
-    udp.print(payload);
-    udp.endPacket();
-  }
+void sendDataSerial(float temp, float hum) {
+  // Output format: DATA,50.00,95.00
+  Serial.print("DATA,");
+  Serial.print(temp);
+  Serial.print(",");
+  Serial.println(hum);
 }
 
 void controlRelays() {
