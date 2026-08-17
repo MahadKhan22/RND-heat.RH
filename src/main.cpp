@@ -195,8 +195,6 @@ void handleKeypad() {
 }
 
 void updateDisplay() {
-  // Clear screen and reset cursor
-  tft.fillScreen(TFT_BLACK); 
   tft.setCursor(0, 0); 
   
   tft.println("--- Current Status | Target Setpoint ---");
@@ -208,7 +206,8 @@ void updateDisplay() {
     tft.print(currentTemp); 
     tft.print(" C      |      "); 
   }
-  tft.print(targetTemp); tft.println(" C");
+  tft.print(targetTemp); 
+  tft.println(" C       "); // Padding to overwrite old digits
 
   tft.print("Hum:  "); 
   if (isnan(currentHum)) {
@@ -217,8 +216,8 @@ void updateDisplay() {
     tft.print(currentHum); 
     tft.print(" %      |      "); 
   }
-  tft.print(targetHum); tft.println(" %");
-
+  tft.print(targetHum); 
+  tft.println(" %       "); // Padding to overwrite old digits
   
   tft.println("\n--- Input Mode ---");
   tft.println("A:Set Temp  B:Set Hum");
@@ -226,10 +225,15 @@ void updateDisplay() {
   tft.println("#:Confirm & Save");
   
   if (currentMode == SET_TEMP) {
-    tft.println("\nEntering Target Temp:");
-    tft.println(entryBuffer); 
+    tft.println("\nEntering Target Temp:        ");
+    tft.print(entryBuffer); 
+    tft.println("               "); // Padding for buffer
   } else if (currentMode == SET_HUM) {
-    tft.println("\nEntering Target Hum:");
-    tft.println(entryBuffer); 
+    tft.println("\nEntering Target Hum:         ");
+    tft.print(entryBuffer); 
+    tft.println("               "); // Padding for buffer
+  } else {
+    tft.println("\n                             "); // Overwrite prompt text
+    tft.println("                             "); // Overwrite buffer text
   }
 }
