@@ -207,7 +207,7 @@ void updateDisplay() {
     tft.print(" C      |      "); 
   }
   tft.print(targetTemp); 
-  tft.println(" C       "); // Padding to overwrite old digits
+  tft.println(" C   "); // Padding to overwrite old digits
 
   tft.print("Hum:  "); 
   if (isnan(currentHum)) {
@@ -217,7 +217,7 @@ void updateDisplay() {
     tft.print(" %      |      "); 
   }
   tft.print(targetHum); 
-  tft.println(" %       "); // Padding to overwrite old digits
+  tft.println(" %    "); // Padding to overwrite old digits
   
   tft.println("\n--- Input Mode ---");
   tft.println("A:Set Temp  B:Set Hum");
@@ -227,13 +227,13 @@ void updateDisplay() {
   if (currentMode == SET_TEMP) {
     tft.println("\nEntering Target Temp:        ");
     tft.print(entryBuffer); 
-    tft.println("               "); // Padding for buffer
+    tft.println("      "); // Padding for buffer
   } else if (currentMode == SET_HUM) {
     tft.println("\nEntering Target Hum:         ");
     tft.print(entryBuffer); 
-    tft.println("               "); // Padding for buffer
+    tft.println("      "); // Padding for buffer
   } else {
-    tft.println("\n                             "); // Overwrite prompt text
-    tft.println("                             "); // Overwrite buffer text
+    tft.println("\n                     "); // Overwrite prompt text
+    tft.println("      "); // Overwrite buffer text
   }
 }
